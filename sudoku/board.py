@@ -8,6 +8,8 @@ Created on Tue Jun 23 12:49:25 2020
 import pygame
 from pygame.locals import *
 import time
+import numpy as np
+
 pygame.init()
 
 def draw_board():
@@ -31,40 +33,34 @@ def draw_board():
     
     
 def insert_nums():
+    global game
     fontCurr = pygame.font.SysFont('ebrima.ttc', 24)
-    game = [
-        [5,3,0,0,7,0,0,0,0],
-        [6,0,0,1,9,5,0,0,0],
-        [0,9,8,0,0,0,0,6,0],
-        [8,0,0,0,6,0,0,0,3],
-        [4,0,0,8,0,3,0,0,1],
-        [7,0,0,0,2,0,0,0,6],
-        [0,6,0,0,0,0,2,8,0],
-        [0,0,0,4,1,9,0,0,5],
-        [0,0,0,0,8,0,0,7,9]
-        ]
-    
     start = (height//9) // 2
     for y in range(start, height, height//9):
-        row = get_row(y)
-        #print("y:", y)
+        row = (y-start) //(height//9)
         for x in range(start, width, width//9):
-            col = get_col(x)
+            col = (x-start) //(width//9)
             if (game[row][col] != 0):
                 img = fontCurr.render(str(game[row][col]), True, BLACK)
-                #print("x:", x)
                 screen.blit(img, (x,y))
-        #print()
-        
-def get_row(y):
-    start = (height//9) // 2
-    return (y-start) //(height//9)
+            elif game_played[row][col] != 0:
+                img = fontCurr.render(str(game_played[row][col]), True, RED)
+                screen.blit(img, (x,y))
 
-def get_col(x):
-    start = (width//9) // 2
-    return (x-start) //(width//9)
+    
 
-
+game = [
+    [5,3,0,0,7,0,0,0,0],
+    [6,0,0,1,9,5,0,0,0],
+    [0,9,8,0,0,0,0,6,0],
+    [8,0,0,0,6,0,0,0,3],
+    [4,0,0,8,0,3,0,0,1],
+    [7,0,0,0,2,0,0,0,6],
+    [0,6,0,0,0,0,2,8,0],
+    [0,0,0,4,1,9,0,0,5],
+    [0,0,0,0,8,0,0,7,9]
+    ]
+game_played = np.array(game)
 width = 540
 height = 540
 BLACK = (0,0,0)
@@ -80,7 +76,9 @@ rect.topleft = (20,20)
 cursor = pygame.Rect(rect.topright, (3, rect.height))
 nums = "123456789"
 running = True
+pos = (0,0)
 while running:
+    screen.fill((255,255,255))
     try:
         all_events = pygame.event.get()
         for event in all_events:
@@ -89,10 +87,6 @@ while running:
                 
             if event.type == pygame.MOUSEBUTTONUP:
                 pos = pygame.mouse.get_pos()
-                print(pos)
-                row = get_row(pos[1])
-                col = get_col(pos[0])
-                print(row, col)
                 rect.center = pos
                 
             if event.type == pygame.KEYDOWN:
@@ -101,25 +95,30 @@ while running:
                         text = text[:-1]
                 elif event.unicode in nums:
                     text += event.unicode
+                elif event.key == pygame.K_RETURN:
+                    print(pos)
+                    row = int (pos[1]/(width//9))
+                    col = int (pos[0]/(height//9))
+                    print(row, col)
+                    game_played[row][col] = int (text)
+                    text = ""
+                    print(game_played)
+                
         textImg = font.render(text, True, RED)
         rect.size = textImg.get_size()
         cursor.topleft= rect.topright
      
         
-    
-    
-    
-        screen.fill((255,255,255))
+        screen.blit(textImg, rect)
         draw_board()
         insert_nums()
-        screen.blit(textImg, rect)
+        
         #blink cursor
         if time.time() % 1 > 0.5:
             pygame.draw.rect(screen, BLACK, cursor)
     except Exception as e:
         print(e)
         pass
-        #insert_nums()
         
     pygame.display.update()
             
