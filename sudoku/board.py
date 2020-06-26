@@ -9,7 +9,7 @@ import pygame
 from pygame.locals import *
 import time
 import numpy as np
-
+import solve_sudoku as s
 pygame.init()
 
 def draw_board():
@@ -44,7 +44,7 @@ def insert_nums():
                 img = fontCurr.render(str(game[row][col]), True, BLACK)
                 screen.blit(img, (x,y))
             elif game_played[row][col] != 0:
-                img = fontCurr.render(str(game_played[row][col]), True, RED)
+                img = fontCurr.render(str(game_played[row][col]), True, BLUE)
                 screen.blit(img, (x,y))
 
     
@@ -65,6 +65,7 @@ width = 540
 height = 540
 BLACK = (0,0,0)
 RED = (255,0,0)
+BLUE = (0,0,255)
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Sudoku")
 
@@ -100,10 +101,16 @@ while running:
                     row = int (pos[1]/(width//9))
                     col = int (pos[0]/(height//9))
                     print(row, col)
-                    game_played[row][col] = int (text)
+                    if s.checkPossible(row, col, int(text), game_played):
+                        game_played[row][col] = int (text)
+                        text = ""
+                        print(game_played)
+                elif event.key == pygame.K_d:
+                    row = int (pos[1]/(width//9))
+                    col = int (pos[0]/(height//9))
+                    game_played[row][col] = 0
                     text = ""
-                    print(game_played)
-                
+                    
         textImg = font.render(text, True, RED)
         rect.size = textImg.get_size()
         cursor.topleft= rect.topright
