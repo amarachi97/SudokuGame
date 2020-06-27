@@ -23,6 +23,7 @@ from datetime import datetime
 
 
 startTime = datetime.now()
+runTime = 0
 result = np.zeros(shape=(9,9), dtype=int) 
 def checkPossible(r, c, num, grid):
     #ROW
@@ -63,28 +64,30 @@ solve()
 Description: this fucntioon uses this function 
 
 """
-def solve(grid):
+def solveHelper(grid):
     global result
     global startTime
+    global runTime
     for i in range(9):
         for j in range(9):
             if grid[i][j] == 0:
                 for input in range(1,10):
                     if (checkPossible(i,j,input, grid)):
                         grid[i][j] = input
-                        solve(grid)
+                        solveHelper(grid)
                         grid[i][j]=0
                 return
     #print (np.matrix(grid))
     result = np.copy(grid)
     #print(result)
-    startTime = datetime.now() - startTime
+    #startTime = datetime.now() - startTime
+    runTime = datetime.now() - startTime
     
-def solveHelper(grid):
+def solve(grid):
     global result
-    global startTime
-    solve(grid)
-    return result, startTime
+    global runTime
+    solveHelper(grid)
+    return result, runTime
  
 #MEDIUM
 #game = [[0,0,0,0,0,9,8,0,0], 
