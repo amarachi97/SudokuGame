@@ -22,12 +22,12 @@ class Create:
        # print(self.game)
         self.blank_out()
         print(self.game)
+        return self.game
+        #solved_game, time = s.solve(self.game)
+        #print("Solved game")
+        #print(solved_game)
         
-        solved_game, time = s.solve(self.game)
-        print("Solved game")
-        print(solved_game)
-        
-        print("Time: ", time)
+        #print("Time: ", time)
             
     def swap(self):
         for i in range(5):  #half of the grid    
@@ -46,7 +46,7 @@ class Create:
             self.game[opp] = temp
             
     def blank_out(self):
-        for i in range(50):
+        for i in range(60):
             row= random.randint(0,8)
             col = random.randint(0,8)
             
@@ -84,7 +84,7 @@ solved_game_hard = [
         [1,2,3,7,9,6,5,4,8]]
 
 
-a = Create(solved_game_hard)
-a.create()
+#a = Create(solved_game_hard)
+#a.create()
 
 
