@@ -10,6 +10,7 @@ from pygame.locals import *
 import time
 import numpy as np
 import solve_sudoku as s
+import create_sudoku as cr
 #pygame.init()
 BLACK = (0,0,0)
 RED = (255,0,0)
@@ -23,6 +24,28 @@ EASY = [[5,3,0,0,7,0,0,0,0],
             [0,6,0,0,0,0,2,8,0],
             [0,0,0,4,1,9,0,0,5],
             [0,0,0,0,8,0,0,7,9]]
+
+#EASY = [
+#        [5,3,4,6,7,8,9,1,2],
+#        [6,7,2,1,9,5,3,4,8],
+#        [1,9,8,3,4,2,5,6,7],
+#        [8,5,9,7,6,1,4,2,3],
+#        [4,2,6,8,5,3,7,9,1],
+#        [7,1,3,9,2,4,8,5,6],
+#        [9,6,1,5,3,7,2,8,4],
+#        [2,8,7,4,1,9,6,3,5],
+#        [3,4,5,2,8,6,1,7,9]]
+
+#HARD = [
+#        [4,5,2,6,8,7,3,1,9],
+#        [3,7,8,1,5,9,4,2,6],
+#        [6,1,9,4,2,3,7,8,5],
+#        [2,3,7,9,4,8,6,5,1],
+#        [5,4,1,3,6,2,8,9,7],
+#        [9,8,6,5,7,1,2,3,4],
+#        [8,6,5,2,1,4,9,7,3],
+#        [7,9,4,8,3,5,1,6,2],
+#        [1,2,3,7,9,6,5,4,8]]
 
 MEDIUM = [[0,0,0,0,0,9,8,0,0], 
         [0,1,8,4,0,0,0,2,0], 
@@ -57,18 +80,24 @@ class Game:
     def pick_game(self):
         global game
         global game_played
+        
         print("Enter your level of difficulty")
         print("1: Easy")
         print("2: Medium")
         print("3: Hard")
         option = int (input("Enter desired option: "))
         if option == 1:
+#            make = cr.Create(EASY)
+#            game = make.create()
             game = EASY
             
         if option == 2:
+#            make = cr.Create(MEDIUM)
+#            game = make.create()
             game = MEDIUM
-            
         if option == 3:
+#            make = cr.Create(HARD)
+#            game = make.create()
             game = HARD
             
         game_played = np.copy(game)
