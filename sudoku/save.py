@@ -23,7 +23,7 @@ class Create:
         self.blank_out()
         print(self.game)
         
-        solved_game, time = s.solveHelper(self.game)
+        solved_game, time = s.solve(self.game)
         print("Solved game")
         print(solved_game)
         
