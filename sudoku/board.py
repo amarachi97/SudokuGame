@@ -17,7 +17,7 @@ def draw_board():
     line_count = 0
     for i in range(0, width, width//9):
         #++line_count
-        if line_count % 3 == 0 :
+        if line_count % 3 == 0 and line_count != 0:
             pygame.draw.line(screen, BLACK, (0, i), (width, i), 2)
         pygame.draw.line(screen, BLACK, (0, i), (width, i))
         line_count +=1
@@ -49,7 +49,7 @@ def insert_nums():
 
     
 
-game = [
+game = np.array([
     [5,3,0,0,7,0,0,0,0],
     [6,0,0,1,9,5,0,0,0],
     [0,9,8,0,0,0,0,6,0],
@@ -59,8 +59,8 @@ game = [
     [0,6,0,0,0,0,2,8,0],
     [0,0,0,4,1,9,0,0,5],
     [0,0,0,0,8,0,0,7,9]
-    ]
-game_played = np.array(game)
+    ])
+game_played = np.copy(game)
 width = 540
 height = 540
 BLACK = (0,0,0)
@@ -110,6 +110,10 @@ while running:
                     col = int (pos[0]/(height//9))
                     game_played[row][col] = 0
                     text = ""
+                    
+                elif event.key == pygame.K_s:
+                    result, runTime = s.solve(game)
+                    game_played = np.copy(result)
                     
         textImg = font.render(text, True, RED)
         rect.size = textImg.get_size()
