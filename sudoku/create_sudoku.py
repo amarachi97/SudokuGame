@@ -59,8 +59,9 @@ class Create:
 #            print(opp_col)
             self.game[row,col] = 0
             self.game[opp_row, opp_col] = 0
-            
         
+        
+
 solved_game_easy = [
         [5,3,4,6,7,8,9,1,2],
         [6,7,2,1,9,5,3,4,8],
