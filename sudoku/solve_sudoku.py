@@ -21,7 +21,6 @@ return False otherwise
 import numpy as np
 from datetime import datetime
 
-
 startTime = datetime.now()
 runTime = 0
 result = np.zeros(shape=(9,9), dtype=int) 
@@ -71,6 +70,7 @@ def solveHelper(grid):
                         grid[i][j] = input
                         solveHelper(grid)
                         grid[i][j]=0
+                        
                 return
     #print (np.matrix(grid))
     result = np.copy(grid)
