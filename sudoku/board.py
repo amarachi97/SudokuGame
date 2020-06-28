@@ -11,6 +11,7 @@ import time
 import numpy as np
 import solve_sudoku as s
 import create_sudoku as cr
+import traceback
 #pygame.init()
 BLACK = (0,0,0)
 RED = (255,0,0)
@@ -24,28 +25,6 @@ EASY = [[5,3,0,0,7,0,0,0,0],
             [0,6,0,0,0,0,2,8,0],
             [0,0,0,4,1,9,0,0,5],
             [0,0,0,0,8,0,0,7,9]]
-
-#EASY = [
-#        [5,3,4,6,7,8,9,1,2],
-#        [6,7,2,1,9,5,3,4,8],
-#        [1,9,8,3,4,2,5,6,7],
-#        [8,5,9,7,6,1,4,2,3],
-#        [4,2,6,8,5,3,7,9,1],
-#        [7,1,3,9,2,4,8,5,6],
-#        [9,6,1,5,3,7,2,8,4],
-#        [2,8,7,4,1,9,6,3,5],
-#        [3,4,5,2,8,6,1,7,9]]
-
-#HARD = [
-#        [4,5,2,6,8,7,3,1,9],
-#        [3,7,8,1,5,9,4,2,6],
-#        [6,1,9,4,2,3,7,8,5],
-#        [2,3,7,9,4,8,6,5,1],
-#        [5,4,1,3,6,2,8,9,7],
-#        [9,8,6,5,7,1,2,3,4],
-#        [8,6,5,2,1,4,9,7,3],
-#        [7,9,4,8,3,5,1,6,2],
-#        [1,2,3,7,9,6,5,4,8]]
 
 MEDIUM = [[0,0,0,0,0,9,8,0,0], 
         [0,1,8,4,0,0,0,2,0], 
@@ -173,7 +152,8 @@ class Game:
                     pygame.draw.rect(self.screen, BLACK, cursor)
             except Exception as e:
                 print(e)
-                pass
+                traceback.print_stack()
+                break
                 
             pygame.display.update()
                     
@@ -193,7 +173,7 @@ class Game:
             
         #vertical lines
         line_count = 0
-        for j in range(0, self.height, self.height//9):
+        for j in range(0, self.width, self.width//9):
             if line_count %3 == 0:
                 pygame.draw.line(self.screen, BLACK, (j, 0), (j, self.height), 2)
             pygame.draw.line(self.screen, BLACK, (j, 0), (j, self.height))
@@ -219,89 +199,7 @@ class Game:
                     img = font.render(str(game_played[row][col]), True, BLUE)
                     self.screen.blit(img, (x,y))
 
-    
 
-
-
-#width = 540
-#height = 540
-#BLACK = (0,0,0)
-#RED = (255,0,0)
-#BLUE = (0,0,255)
-#screen = pygame.display.set_mode((width, height))
-#pygame.display.set_caption("Sudoku")
-#
-#text=""
-#font = pygame.font.SysFont("ebrima.ttc", 24)
-#textImg = font.render(text, True, RED)
-#rect = textImg.get_rect()
-#rect.topleft = (20,20)
-#cursor = pygame.Rect(rect.topright, (3, rect.height))
-#nums = "123456789"
-#running = True
-#pos = (0,0)
-#
-#pick_game()
-#game_played = np.copy(game)
-#while running:
-#    screen.fill((255,255,255))
-#    
-#    try:
-#        all_events = pygame.event.get()
-#        for event in all_events:
-#            if event.type == pygame.QUIT:
-#                running = False
-#                
-#            if event.type == pygame.MOUSEBUTTONUP:
-#                pos = pygame.mouse.get_pos()
-#                rect.center = pos
-#                
-#            if event.type == pygame.KEYDOWN:
-#                if event.key == pygame.K_BACKSPACE:
-#                    if len(text) > 0:
-#                        text = text[:-1]
-#                elif event.unicode in nums:
-#                    text += event.unicode
-#                elif event.key == pygame.K_RETURN:
-#                    print(pos)
-#                    row = int (pos[1]/(width//9))
-#                    col = int (pos[0]/(height//9))
-#                    print(row, col)
-#                    if s.checkPossible(row, col, int(text), game_played):
-#                        game_played[row][col] = int (text)
-#                        text = ""
-#                        print(game_played)
-#                elif event.key == pygame.K_d:
-#                    row = int (pos[1]/(width//9))
-#                    col = int (pos[0]/(height//9))
-#                    game_played[row][col] = 0
-#                    text = ""
-#                    
-#                elif event.key == pygame.K_s:
-#                    result, runTime = s.solve(np.array(game))
-#                    game_played = np.copy(result)
-#                    print(game_played)
-#                    
-#                    
-#        textImg = font.render(text, True, RED)
-#        rect.size = textImg.get_size()
-#        cursor.topleft= rect.topright
-#     
-#        
-#        screen.blit(textImg, rect)
-#        draw_board()
-#        insert_nums()
-#        
-#        #blink cursor
-#        if time.time() % 1 > 0.5:
-#            pygame.draw.rect(screen, BLACK, cursor)
-#    except Exception as e:
-#        print(e)
-#        pass
-#        
-#    pygame.display.update()
-#            
-#pygame.display.quit()           
 
 start = Game()
 start.pick_game()
