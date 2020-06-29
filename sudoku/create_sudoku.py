@@ -14,12 +14,10 @@ class Create:
     def __init__(self, g):
         g = np.array(g)
         self.game = np.copy(g)
-        print(self.game)
         
     def create(self):
         self.swap()
         self.cipher()
-        print(self.game)
         return self.game
             
     def swap(self):
