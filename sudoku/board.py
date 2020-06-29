@@ -12,7 +12,9 @@ import numpy as np
 import solve_sudoku as s
 import create_sudoku as cr
 import traceback
+import math
 
+timer = [0,0,0,0]
 BLACK = (0,0,0)
 RED = (255,0,0)
 BLUE = (0,0,255)
@@ -69,16 +71,14 @@ class Game:
         if option == 1:
             make = cr.Create(EASY)
             game = make.create()
-#            game = EASY
             
         if option == 2:
             make = cr.Create(MEDIUM)
             game = make.create()
-#            game = MEDIUM
+            
         if option == 3:
             make = cr.Create(HARD)
             game = make.create()
-#            game = HARD
             
         game_played = np.copy(game)
         
@@ -91,7 +91,7 @@ class Game:
         
         
         text=""
-        timeText = ""
+        solvedtimeText = ""
         font = pygame.font.SysFont("ebrima.ttc", 24)
         textImg = font.render(text, True, RED)
         rect = textImg.get_rect()
@@ -101,12 +101,11 @@ class Game:
         running = True
         pos = (0,0)
         running = True
-        start_ticks = pygame.time.get_ticks()
+        solved = False
         
         while running:
             self.screen.fill((255,255,255))
-#            seconds = (pygame.time.get_ticks() - start_ticks)/1000
-#            print(seconds)
+
             try:
                 all_events = pygame.event.get()
                 for event in all_events:
@@ -124,14 +123,11 @@ class Game:
                         elif event.unicode in valid_nums:
                             text += event.unicode
                         elif event.key == pygame.K_RETURN:
-                            print(pos)
                             row = int (pos[1]/(self.width//9))
                             col = int (pos[0]/(self.height//9))
-                            print(row, col)
                             if s.checkPossible(row, col, int(text), game_played):
                                 game_played[row][col] = int (text)
                                 text = ""
-                                print(game_played)
                         elif event.key == pygame.K_d:
                             row = int (pos[1]/(self.width//9))
                             col = int (pos[0]/(self.height//9))
@@ -142,13 +138,24 @@ class Game:
                             result, runTime = s.solve(np.array(game))
                             game_played = np.copy(result)
                             print(game_played)
-                            timeText = "Solve Time: " + str(runTime)
-                            
-                            print("Time:",runTime)
-                     
-                timeImg = font.render(timeText, True, BLACK)
-                time_rect = timeImg.get_rect()
-                time_rect.bottomleft = (5, self.height+self.space - 5)
+                            print(runTime)
+                            solvedtimeText = "Solve Time: " + str(runTime)[:-7]
+                            solved = True
+             
+                if solved:
+                    currentTime = "00:00"
+                else:
+                    currentTime = self.get_time()
+                 
+                solvedtimeImg = font.render(solvedtimeText, True, BLACK)
+                solvedtime_rect = solvedtimeImg.get_rect()
+                solvedtime_rect.bottomright = (self.width-40, self.height+self.space - 5)
+                    
+                timerImg = font.render(currentTime, True, BLACK)
+                timer_rect = timerImg.get_rect()
+                timer_rect.bottomleft = (5, self.height+self.space - 5)
+            
+                
                 
                 textImg = font.render(text, True, RED)
                 rect.size = textImg.get_size()
@@ -156,7 +163,8 @@ class Game:
              
                 
                 self.screen.blit(textImg, rect)
-                self.screen.blit(timeImg, time_rect)
+                self.screen.blit(timerImg, timer_rect)
+                self.screen.blit(solvedtimeImg, solvedtime_rect)
                 self.draw_board()
                 self.insert_nums()
                 
@@ -212,7 +220,20 @@ class Game:
                     img = font.render(str(game_played[row][col]), True, BLUE)
                     self.screen.blit(img, (x,y))
 
-
+    def get_time(self):
+           timer[3] += 1
+           timer[0] = math.floor((timer[3] / 100) / 60);
+           timer[1] = math.floor((timer[3] / 100) - (timer[0] * 60))
+           timer[2] = math.floor(timer[3] - (timer[1] * 100))
+           
+           return self.leadingZero(timer[0]) + ":" + self.leadingZero(timer[1])
+       
+    def leadingZero(self, num):
+        if num < 10:
+            return "0" + str(num)
+        return str(num)
+           
+           
 
 start = Game()
 start.pick_game()
