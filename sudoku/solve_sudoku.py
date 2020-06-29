@@ -72,10 +72,7 @@ def solveHelper(grid):
                         grid[i][j]=0
                         
                 return
-    #print (np.matrix(grid))
     result = np.copy(grid)
-    #print(result)
-    #startTime = datetime.now() - startTime
     runTime = datetime.now() - startTime
     
 def solve(grid):
@@ -85,10 +82,5 @@ def solve(grid):
     return result, runTime
 
 
-#grid= np.array(game)
-#solve(grid)
-#print (np.matrix(result))
-#print(startTime)
-#print (checkPossible(1,1,8))
 
   
