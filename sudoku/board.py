@@ -12,7 +12,7 @@ import numpy as np
 import solve_sudoku as s
 import create_sudoku as cr
 import traceback
-#pygame.init()
+
 BLACK = (0,0,0)
 RED = (255,0,0)
 BLUE = (0,0,255)
@@ -54,7 +54,8 @@ class Game:
         pygame.display.set_caption("Sudoku")
         self.width = 540
         self.height = 540
-        self.screen = pygame.display.set_mode((self.width, self.height))
+        self.space = 40
+        self.screen = pygame.display.set_mode((self.width, self.height+self.space))
         
     def pick_game(self):
         global game
@@ -66,18 +67,18 @@ class Game:
         print("3: Hard")
         option = int (input("Enter desired option: "))
         if option == 1:
-#            make = cr.Create(EASY)
-#            game = make.create()
-            game = EASY
+            make = cr.Create(EASY)
+            game = make.create()
+#            game = EASY
             
         if option == 2:
-#            make = cr.Create(MEDIUM)
-#            game = make.create()
-            game = MEDIUM
+            make = cr.Create(MEDIUM)
+            game = make.create()
+#            game = MEDIUM
         if option == 3:
-#            make = cr.Create(HARD)
-#            game = make.create()
-            game = HARD
+            make = cr.Create(HARD)
+            game = make.create()
+#            game = HARD
             
         game_played = np.copy(game)
         
@@ -88,7 +89,9 @@ class Game:
         global game_played
         pygame.init()
         
+        
         text=""
+        timeText = ""
         font = pygame.font.SysFont("ebrima.ttc", 24)
         textImg = font.render(text, True, RED)
         rect = textImg.get_rect()
@@ -98,9 +101,12 @@ class Game:
         running = True
         pos = (0,0)
         running = True
+        start_ticks = pygame.time.get_ticks()
+        
         while running:
             self.screen.fill((255,255,255))
-            
+#            seconds = (pygame.time.get_ticks() - start_ticks)/1000
+#            print(seconds)
             try:
                 all_events = pygame.event.get()
                 for event in all_events:
@@ -136,14 +142,21 @@ class Game:
                             result, runTime = s.solve(np.array(game))
                             game_played = np.copy(result)
                             print(game_played)
+                            timeText = "Solve Time: " + str(runTime)
                             
-                            
+                            print("Time:",runTime)
+                     
+                timeImg = font.render(timeText, True, BLACK)
+                time_rect = timeImg.get_rect()
+                time_rect.bottomleft = (5, self.height+self.space - 5)
+                
                 textImg = font.render(text, True, RED)
                 rect.size = textImg.get_size()
                 cursor.topleft= rect.topright
              
                 
                 self.screen.blit(textImg, rect)
+                self.screen.blit(timeImg, time_rect)
                 self.draw_board()
                 self.insert_nums()
                 
@@ -164,19 +177,19 @@ class Game:
         global BLACK
         #horizontal lines
         line_count = 0
-        for i in range(0, self.width, self.width//9):
+        for y in range(0, self.width+1, self.width//9):
             #++line_count
             if line_count % 3 == 0 and line_count != 0:
-                pygame.draw.line(self.screen, BLACK, (0, i), (self.width, i), 2)
-            pygame.draw.line(self.screen, BLACK, (0, i), (self.width, i))
+                pygame.draw.line(self.screen, BLACK, (0, y), (self.width, y), 2)
+            pygame.draw.line(self.screen, BLACK, (0, y), (self.width, y))
             line_count +=1
             
         #vertical lines
         line_count = 0
-        for j in range(0, self.width, self.width//9):
-            if line_count %3 == 0:
-                pygame.draw.line(self.screen, BLACK, (j, 0), (j, self.height), 2)
-            pygame.draw.line(self.screen, BLACK, (j, 0), (j, self.height))
+        for x in range(0, self.height, self.height//9):
+            if line_count %3 == 0 and line_count != 0:
+                pygame.draw.line(self.screen, BLACK, (x, 0), (x, self.height), 2)
+            pygame.draw.line(self.screen, BLACK, (x, 0), (x, self.height))
             line_count += 1
             
         
