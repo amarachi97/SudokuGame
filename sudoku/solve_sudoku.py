@@ -21,8 +21,8 @@ return False otherwise
 import numpy as np
 from datetime import datetime
 
-startTime = datetime.now()
-runTime = 0
+#startTime = 0
+runTime = ""
 result = np.zeros(shape=(9,9), dtype=int) 
 def checkPossible(r, c, num, grid):
     #ROW
@@ -58,9 +58,9 @@ solve()
 Description: this fucntioon uses this function 
 
 """
-def solveHelper(grid):
+def solveHelper(grid, startTime):
     global result
-    global startTime
+    #global startTime
     global runTime
     for i in range(9):
         for j in range(9):
@@ -68,18 +68,25 @@ def solveHelper(grid):
                 for input in range(1,10):
                     if (checkPossible(i,j,input, grid)):
                         grid[i][j] = input
-                        solveHelper(grid)
+                        solveHelper(grid, startTime)
                         grid[i][j]=0
                         
                 return
     result = np.copy(grid)
-    runTime = datetime.now() - startTime
-    
+    endTime = datetime.now()
+    runTime = leadingZero(endTime.hour - startTime.hour) + ":" + leadingZero(endTime.minute - startTime.minute) + ":" + leadingZero(endTime.second - startTime.second) + "." + str(endTime.microsecond - startTime.microsecond)
+
 def solve(grid):
     global result
     global runTime
-    solveHelper(grid)
+    startTime = datetime.now()
+    solveHelper(grid, startTime)
     return result, runTime
+
+def leadingZero(num):
+    if num < 10:
+        return "0" + str(num)
+    return str(num)
 
 
 
