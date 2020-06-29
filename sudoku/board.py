@@ -13,6 +13,8 @@ import solve_sudoku as s
 import create_sudoku as cr
 import traceback
 import math
+import ctypes  # An included library with Python install.   
+
 
 timer = [0,0,0,0]
 BLACK = (0,0,0)
@@ -136,10 +138,11 @@ class Game:
                             
                         elif event.key == pygame.K_s:
                             result, runTime = s.solve(np.array(game))
+                            if (result == game_played).all():
+                                ctypes.windll.user32.MessageBoxW(0, "YOU WON!!", "Game Status", 1)
                             game_played = np.copy(result)
                             print(game_played)
-                            print(runTime)
-                            solvedtimeText = "Solve Time: " + str(runTime)[:-7]
+                            solvedtimeText = "Solve Time: " + runTime
                             solved = True
              
                 if solved:
