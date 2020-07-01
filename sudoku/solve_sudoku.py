@@ -53,9 +53,9 @@ def checkPossible(r, c, num, grid):
     return True
 
 """
-solve()
+solveHelper()
 
-Description: this fucntioon uses this function 
+Description: solves the sudoku 
 
 """
 def solveHelper(grid, startTime):
@@ -76,6 +76,12 @@ def solveHelper(grid, startTime):
     endTime = datetime.now()
     runTime = leadingZero(endTime.hour - startTime.hour) + ":" + leadingZero(endTime.minute - startTime.minute) + ":" + leadingZero(endTime.second - startTime.second) + "." + str(endTime.microsecond - startTime.microsecond)
 
+"""
+solve()
+
+Description: sets the start time and sends the grid to the solveHelper function
+
+"""
 def solve(grid):
     global result
     global runTime
