@@ -18,7 +18,8 @@ NOTE that a valid input is one that is not repeated in the row, column or square
 After the user is done played, close the window to end the game
 
 BUGS<br />
-The window might not load up as expected if run too soon after the previous execution. Whatever the case may be, just start the execution over again. 
+1. The window might not load up as expected if run too soon after the previous execution. Whatever the case may be, just start the execution over again.
+2. Also solved time might have a negative value in the "seconds" portion of the display. I think this is because the puzzled was solved to soon after the gamke started, but I'm not sure.
 
 POTENTIAL IMPROVEMENTS<br />
 1. Might add a functionality to display the step by step solving of the game instead of just the finished product 
