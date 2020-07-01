@@ -3,6 +3,10 @@
 Created on Sun Jun 14 18:41:50 2020
 
 @author: User
+
+class Create:
+    This class creates a unique for each play by swapping the rows and columns and cipher
+the numbers in the game
 """
 import numpy as np
 import random
